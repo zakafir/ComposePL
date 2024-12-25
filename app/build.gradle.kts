@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.zak.afir.composepl"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.zak.afir.composepl"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 

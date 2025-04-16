@@ -3,6 +3,7 @@ package com.zak.afir.composepl.basic_layout.assignment
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -67,29 +68,23 @@ fun ProjectCard(
                     )
                     .padding(2.dp)
             )
-            Row(
-                modifier = Modifier
-                    .weight(1f),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            Text(
+                modifier = Modifier.weight(1f),
+                text = project.title,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                fontSize = 26.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = Color.White,
+            )
+            IconButton(
+                onClick = {}
             ) {
-                Text(
-                    text = project.title,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1,
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.SemiBold,
-                    color = Color.White,
+                Icon(
+                    imageVector = Icons.Default.MoreVert,
+                    contentDescription = null,
+                    tint = Color.White
                 )
-                IconButton(
-                    onClick = {}
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.MoreVert,
-                        contentDescription = null,
-                        tint = Color.White
-                    )
-                }
             }
         }
         Text(

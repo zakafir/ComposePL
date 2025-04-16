@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.zak.afir.composepl.basic_layout.HotelBookingScreen
+import com.zak.afir.composepl.state_management.number_guess.NumberGuessScreenRoot
 import com.zak.afir.composepl.ui.theme.ComposePLTheme
 
 class MainActivity : ComponentActivity() {
@@ -21,7 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ComposePLTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    HotelBookingScreen(
+                    NumberGuessScreenRoot(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

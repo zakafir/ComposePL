@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Checkbox
@@ -38,6 +39,15 @@ fun TodoScreenRoot(modifier: Modifier) {
 
 @Composable
 fun TodoScreen(todoState: TodoState, onAction: (TodoAction) -> Unit, modifier: Modifier) {
+    LazyColumn {
+        items(5) {
+            TodoItem(modifier = modifier, todoState = todoState, onAction = onAction)
+        }
+    }
+}
+
+@Composable
+fun TodoItem(modifier: Modifier, todoState: TodoState, onAction: (TodoAction) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

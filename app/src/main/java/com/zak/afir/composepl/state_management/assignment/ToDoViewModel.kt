@@ -18,6 +18,10 @@ class ToDoViewModel : ViewModel() {
                     )
                 }
             }
+
+            TodoAction.OnClickDelete -> {
+
+            }
         }
     }
 }

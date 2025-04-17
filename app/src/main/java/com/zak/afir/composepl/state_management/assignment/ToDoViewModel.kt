@@ -6,22 +6,28 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class ToDoViewModel : ViewModel() {
-    private val _state = MutableStateFlow(TodoState())
+    private val _state = MutableStateFlow(listOf(TodoState(), TodoState(), TodoState(), TodoState()))
     val state = _state.asStateFlow()
 
     fun onAction(todoAction: TodoAction) {
         when (todoAction) {
             is TodoAction.OnClickOnChecked -> {
                 _state.update {
-                    it.copy(
-                        isChecked = todoAction.isChecked
-                    )
+                    it.mapIndexed { index, todoState ->
+                        if (index == todoAction.index) {
+                            todoState.copy(isChecked = !todoState.isChecked)
+                        } else todoState
+                    }
                 }
             }
 
             TodoAction.OnClickDelete -> {
 
             }
+
+            is TodoAction.OnAddNewTodo -> TODO()
+            is TodoAction.OnDescriptionChange -> TODO()
+            is TodoAction.OnTitleChange -> TODO()
         }
     }
 }

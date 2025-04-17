@@ -7,17 +7,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,22 +35,60 @@ fun TodoScreenRoot(modifier: Modifier) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     TodoScreen(
         modifier = modifier,
-        todoState = state,
+        todos = state,
         onAction = viewModel::onAction
     )
 }
 
 @Composable
-fun TodoScreen(todoState: TodoState, onAction: (TodoAction) -> Unit, modifier: Modifier) {
-    LazyColumn {
-        items(5) {
-            TodoItem(modifier = modifier, todoState = todoState, onAction = onAction)
+fun TodoScreen(todos: List<TodoState>, onAction: (TodoAction) -> Unit, modifier: Modifier) {
+    Column(modifier = modifier.padding(16.dp)) {
+        LazyColumn(
+            modifier = modifier
+                .fillMaxSize()
+                .weight(1f)
+        ) {
+            itemsIndexed(todos) { key , todo ->
+                TodoItem(modifier = modifier, todo = todo, index = key, onAction = onAction)
+            }
+        }
+        Row(verticalAlignment = Alignment.Bottom) {
+            Column(
+                modifier = modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                TextField(
+                    value = "",
+                    onValueChange = { onAction(TodoAction.OnTitleChange(it)) },
+                    placeholder = { Text(text = "Title") }
+                )
+                TextField(
+                    value = "",
+                    onValueChange = { onAction(TodoAction.OnDescriptionChange(it)) },
+                    placeholder = { Text(text = "Description") }
+                )
+            }
+            Button(
+                onClick = {
+                    onAction(
+                        TodoAction.OnAddNewTodo(
+                            TodoState(
+                                title = "toto",
+                                description = "titi",
+                                isChecked = false
+                            )
+                        )
+                    )
+                }
+            ) {
+                Text(text = "Add")
+            }
         }
     }
 }
 
 @Composable
-fun TodoItem(modifier: Modifier, todoState: TodoState, onAction: (TodoAction) -> Unit) {
+fun TodoItem(modifier: Modifier, todo: TodoState, index: Int, onAction: (TodoAction) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -60,25 +101,25 @@ fun TodoItem(modifier: Modifier, todoState: TodoState, onAction: (TodoAction) ->
                 .weight(1f)
         ) {
             Text(
-                text = todoState.title,
+                text = todo.title,
                 fontWeight = FontWeight.Bold,
-                textDecoration = if (todoState.isChecked)
+                textDecoration = if (todo.isChecked)
                     TextDecoration.LineThrough
                 else
                     TextDecoration.None
             )
             Text(
-                todoState.description,
-                textDecoration = if (todoState.isChecked)
+                todo.description,
+                textDecoration = if (todo.isChecked)
                     TextDecoration.LineThrough
                 else
                     TextDecoration.None
             )
         }
         Checkbox(
-            checked = todoState.isChecked,
+            checked = todo.isChecked,
             onCheckedChange = { isChecked ->
-                onAction(TodoAction.OnClickOnChecked(isChecked))
+                onAction(TodoAction.OnClickOnChecked(isChecked, index))
             })
         IconButton(onClick = { onAction(TodoAction.OnClickDelete) }) {
             Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
@@ -91,10 +132,12 @@ fun TodoItem(modifier: Modifier, todoState: TodoState, onAction: (TodoAction) ->
 fun TodoScreenPreview() {
     ComposePLTheme {
         TodoScreen(
-            todoState = TodoState(
-                title = "Bring out the trash",
-                description = "Better do this before wife comes home",
-                isChecked = false
+            todos = listOf(
+                TodoState(
+                    title = "Bring out the trash",
+                    description = "Better do this before wife comes home",
+                    isChecked = false
+                )
             ),
             onAction = {
 

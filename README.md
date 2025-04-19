@@ -7,8 +7,8 @@ A simple and elegant ToDo application built with **Jetpack Compose** and **Kotli
 ## 📸 Screenshots
 
 | Home Screen | Adding a Task | Checked Task |
-|-------------|----------------|----------------|
-| ![Home](screenshots/home.png) | ![Add](screenshots/add.png) | ![Checked](screenshots/checked.png) |
+|-------------|----------------|---------------|
+| ![Home Screen](https://github.com/user-attachments/assets/ffcb1cdd-4846-4e8f-91e4-943192f083a3) | ![Adding a Task](https://github.com/user-attachments/assets/e467ea77-a4c8-4259-b792-c7a6b2f7c743) | ![Checked Task](https://github.com/user-attachments/assets/f7ca819d-80ee-42b1-8175-79ff0440053f) |
 
 ---
 
@@ -16,7 +16,8 @@ A simple and elegant ToDo application built with **Jetpack Compose** and **Kotli
 
 Here’s a quick look at the app in action:
 
-![Demo GIF](screenshots/todo-demo.gif)
+![Demo]([Screen_recording_20250419_145608.webm](https://github.com/user-attachments/assets/273efc4a-37e3-4c8c-acfc-2d0fc86df629)
+
 
 ---
 

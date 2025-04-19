@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
@@ -33,15 +32,22 @@ import com.zak.afir.composepl.ui.theme.ComposePLTheme
 fun TodoScreenRoot(modifier: Modifier) {
     val viewModel = viewModel<ToDoViewModel>()
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val newAddedTodo by viewModel.newAddedTodo.collectAsStateWithLifecycle()
     TodoScreen(
         modifier = modifier,
         todos = state,
+        newAddedTodo = newAddedTodo,
         onAction = viewModel::onAction
     )
 }
 
 @Composable
-fun TodoScreen(todos: List<TodoState>, onAction: (TodoAction) -> Unit, modifier: Modifier) {
+fun TodoScreen(
+    todos: List<TodoState>,
+    onAction: (TodoAction) -> Unit,
+    modifier: Modifier,
+    newAddedTodo: TodoState
+) {
     Column(modifier = modifier.padding(16.dp)) {
         LazyColumn(
             modifier = modifier
@@ -52,33 +58,25 @@ fun TodoScreen(todos: List<TodoState>, onAction: (TodoAction) -> Unit, modifier:
                 TodoItem(modifier = modifier, todo = todo, index = key, onAction = onAction)
             }
         }
-        Row(verticalAlignment = Alignment.Bottom) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Column(
                 modifier = modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 TextField(
-                    value = "",
+                    value = newAddedTodo.title,
                     onValueChange = { onAction(TodoAction.OnTitleChange(it)) },
                     placeholder = { Text(text = "Title") }
                 )
                 TextField(
-                    value = "",
+                    value = newAddedTodo.description,
                     onValueChange = { onAction(TodoAction.OnDescriptionChange(it)) },
                     placeholder = { Text(text = "Description") }
                 )
             }
             Button(
                 onClick = {
-                    onAction(
-                        TodoAction.OnAddNewTodo(
-                            TodoState(
-                                title = "toto",
-                                description = "titi",
-                                isChecked = false
-                            )
-                        )
-                    )
+                    onAction(TodoAction.OnAddNewTodo)
                 }
             ) {
                 Text(text = "Add")
@@ -121,7 +119,7 @@ fun TodoItem(modifier: Modifier, todo: TodoState, index: Int, onAction: (TodoAct
             onCheckedChange = { isChecked ->
                 onAction(TodoAction.OnClickOnChecked(isChecked, index))
             })
-        IconButton(onClick = { onAction(TodoAction.OnClickDelete) }) {
+        IconButton(onClick = { onAction(TodoAction.OnClickDelete(index)) }) {
             Icon(imageVector = Icons.Default.Delete, contentDescription = "Delete")
         }
     }
@@ -142,7 +140,8 @@ fun TodoScreenPreview() {
             onAction = {
 
             },
-            modifier = Modifier
+            modifier = Modifier,
+            newAddedTodo = TodoState()
         )
     }
 }

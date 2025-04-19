@@ -6,8 +6,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
 class ToDoViewModel : ViewModel() {
-    private val _state = MutableStateFlow(listOf(TodoState(), TodoState(), TodoState(), TodoState()))
+    private val _state = MutableStateFlow(getTodos())
     val state = _state.asStateFlow()
+
+    private val _newAddedTodo = MutableStateFlow(
+        TodoState(
+            title = "",
+            description = ""
+        )
+    )
+    val newAddedTodo = _newAddedTodo.asStateFlow()
 
     fun onAction(todoAction: TodoAction) {
         when (todoAction) {
@@ -21,19 +29,46 @@ class ToDoViewModel : ViewModel() {
                 }
             }
 
-            TodoAction.OnClickDelete -> {
-
+            is TodoAction.OnClickDelete -> {
+                _state.update {
+                    it.filterIndexed { index, _ ->
+                        index != todoAction.index
+                    }
+                }
             }
 
-            is TodoAction.OnAddNewTodo -> TODO()
-            is TodoAction.OnDescriptionChange -> TODO()
-            is TodoAction.OnTitleChange -> TODO()
+            is TodoAction.OnAddNewTodo -> {
+                _state.update {
+                    it + _newAddedTodo.value
+                }
+            }
+
+            is TodoAction.OnDescriptionChange -> {
+                _newAddedTodo.update {
+                    it.copy(description = todoAction.description)
+                }
+            }
+
+            is TodoAction.OnTitleChange -> {
+                _newAddedTodo.update {
+                    it.copy(title = todoAction.title)
+                }
+            }
         }
     }
 }
 
 data class TodoState(
-    val title: String = "Bring out the trash",
-    val description: String = "Better do this before wife comes home",
+    val index: Int = 0,
+    val title: String = "Item $index",
+    val description: String = "Description $index",
     val isChecked: Boolean = false
 )
+
+fun getTodos(): List<TodoState> {
+    val todos = mutableListOf<TodoState>()
+    for (i in 0..2) {
+        todos.add(TodoState(index = i))
+    }
+    return todos
+}

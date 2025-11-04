@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.zak.afir.composepl.utility.printConstraints
 
 @Composable
 fun SizeModifiersDemo() {
@@ -23,13 +24,17 @@ fun SizeModifiersDemo() {
         Box(
             modifier = Modifier
                 .height(100.dp)
+                .printConstraints("Before 1. fillMaxWidth")
                 .fillMaxWidth(fraction = 0.5f)
+                .printConstraints("After 1. fillMaxWidth")
                 .background(Color.Yellow)
         )
         Box(
             modifier = Modifier
                 .height(100.dp)
+                .printConstraints("Before 2. fillMaxWidth")
                 .fillMaxWidth(fraction = 0.5f)
+                .printConstraints("After 2. fillMaxWidth")
                 .background(Color.Green)
         )
     }

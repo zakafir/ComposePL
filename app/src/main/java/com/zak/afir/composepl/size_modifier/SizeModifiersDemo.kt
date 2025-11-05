@@ -6,8 +6,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,15 +30,20 @@ fun SizeModifiersDemo() {
             modifier = Modifier
                 .height(100.dp)
                 .printConstraints("Before 1. fillMaxWidth") // Constraints(1080, 1080, 100, 3000)
-                .width(300.dp)
+                .requiredWidth(300.dp)
                 .printConstraints("After 1. fillMaxWidth") // Constraints(1000, 1000, 100, 3000)
-                .background(Color.Yellow)
-        )
+                .background(Color.Yellow),
+            contentAlignment = Alignment.CenterEnd
+        ) {
+            Text(
+                text = "Hello World, this is requiredWidth of all the box",
+            )
+        }
         Box(
             modifier = Modifier
                 .height(100.dp) // Constraints(1000, 1000, 100, 3000)
                 .printConstraints("Before 2. fillMaxWidth")
-                .width(300.dp)
+                .requiredWidth(300.dp)
                 .printConstraints("After 2. fillMaxWidth")
                 .background(Color.Green)
         )
